@@ -1,0 +1,52 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/Actor.h"
+#include "Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h"
+#include "Components/StaticMeshComponent.h"
+#include "Runtime/Engine/Classes/Engine/Engine.h"
+#include "MyUE4_HomeTask4_DelegsGameMode.h"
+#include "TrafficLights.h"
+#include "Obstacle.generated.h"
+
+UCLASS()
+class UE4_HOMETASK4_DELEGS_API AObstacle : public AActor
+{
+	GENERATED_BODY()
+	
+public:	
+	// Sets default values for this actor's properties
+	AObstacle();
+
+	UPROPERTY()
+		UStaticMeshComponent* StaticMesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool IsOpen;
+
+	UFUNCTION()
+		void Open();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int32 OpenSpeed = 1000;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float ZMin = -500;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		ATrafficLights* TrafficLights;
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+
+public:	
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+	//UFUNCTION()
+	/*FRoadFreeEvent& onRoadFree(FRoadFreeEvent &Event);*/
+	//bad/ virtual void OnPlayerEntered() override;
+	void OnRoadFree();
+};
