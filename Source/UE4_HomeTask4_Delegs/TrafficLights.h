@@ -62,5 +62,5 @@ private:
 	UPointLightComponent* GetColorComponent(ETrafficLightsColors Color);
 	void StartWorkByTimer();
 	void StartWork();
-	void OpenRoadTrigger();
+	void SwitchRoadTrigger(ERoadOpenOrClose OpenOrCLose);
 };

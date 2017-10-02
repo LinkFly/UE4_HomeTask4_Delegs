@@ -104,12 +104,12 @@ void ATrafficLights::SwitchColor(ETrafficLightsColors Color) {
 	Light->SetVisibility(true);
 }
 
-void ATrafficLights::OpenRoadTrigger()
+void ATrafficLights::SwitchRoadTrigger(ERoadOpenOrClose OpenOrClose)
 {
 	AGameModeBase* CurGameMode = GetWorld()->GetAuthGameMode();
 	AMyUE4_HomeTask4_DelegsGameMode* GameMode = Cast<AMyUE4_HomeTask4_DelegsGameMode>(CurGameMode);
 	if (GameMode) {
-		GameMode->OnRoadFree.Broadcast();
+		GameMode->OnRoadFree.Broadcast(OpenOrClose);
 	}
 	else {
 		GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, TEXT("Error: Bad GameMode"));
@@ -121,14 +121,16 @@ void ATrafficLights::StartWork()
 	SwitchColor(NextColor);
 	switch (CurColor) {
 	case Green:
-		OpenRoadTrigger();
-		break;
-	case Red:
-		NextColor = Yellow;
-		StartWorkByTimer();
+		SwitchRoadTrigger(RoadOpen);
 		break;
 	case Yellow:
 		NextColor = Green;
+		StartWorkByTimer();
+		break;
+	
+	case Red:
+		SwitchRoadTrigger(RoadClose);
+		NextColor = Yellow;
 		StartWorkByTimer();
 		break;
 	}

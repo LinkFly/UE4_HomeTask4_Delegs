@@ -9,6 +9,7 @@
 #include "Runtime/Engine/Classes/Engine/Engine.h"
 #include "MyUE4_HomeTask4_DelegsGameMode.h"
 #include "TrafficLights.h"
+#include "GameStructs.h"
 #include "Obstacle.generated.h"
 
 UCLASS()
@@ -24,15 +25,26 @@ public:
 		UStaticMeshComponent* StaticMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool IsOpen;
+		bool IsOpening = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool IsClosing = false;
 
 	UFUNCTION()
 		void Open();
+	UFUNCTION()
+		void Close();
+	UFUNCTION()
+		void OpenOrClose(ERoadOpenOrClose OpenOrClose);
+
+	void CheckCurPosition();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int32 OpenSpeed = 1000;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float ZMin = -500;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float ZMax = 500;
 
 protected:
 	// Called when the game starts or when spawned

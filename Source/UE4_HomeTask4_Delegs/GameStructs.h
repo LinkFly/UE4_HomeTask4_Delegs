@@ -5,3 +5,6 @@
 
 UENUM()
 enum ETrafficLightsColors { Red, Yellow, Green };
+
+UENUM()
+enum ERoadOpenOrClose { RoadOpen, RoadClose };

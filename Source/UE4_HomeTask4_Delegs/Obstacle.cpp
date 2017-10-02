@@ -17,7 +17,6 @@ AObstacle::AObstacle()
 	StaticMesh->SetRelativeScale3D(FVector(10, 1, 10));
 	///////////////
 
-	IsOpen = false;
 }
 
 // Called when the game starts or when spawned
@@ -27,7 +26,7 @@ void AObstacle::BeginPlay()
 	AGameModeBase* CurGameMode = GetWorld()->GetAuthGameMode();
 	AMyUE4_HomeTask4_DelegsGameMode* GameMode = Cast<AMyUE4_HomeTask4_DelegsGameMode>(CurGameMode);
 	if (GameMode) {
-		GameMode->OnRoadFree.AddUObject(this, &AObstacle::Open);
+		GameMode->OnRoadFree.AddUObject(this, &AObstacle::OpenOrClose);
 	}
 	else {
 		GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, TEXT("Error: Bad GameMode"));
@@ -36,20 +35,44 @@ void AObstacle::BeginPlay()
 
 void AObstacle::Open()
 {
-	IsOpen = true;
+	IsClosing = false;
+	IsOpening = true;
+}
+
+void AObstacle::Close()
+{
+	IsOpening = false;
+	IsClosing = true;
+}
+
+void AObstacle::OpenOrClose(ERoadOpenOrClose OpenOrClose)
+{
+	if (OpenOrClose == RoadOpen) Open();
+	if (OpenOrClose == RoadClose) Close();
+}
+
+void AObstacle::CheckCurPosition()
+{
+	float curZ = GetActorLocation().Z;
+	if (curZ < ZMin) {
+		IsOpening = false;
+	}
+	if (curZ > ZMax) {
+		IsClosing = false;
+	}
 }
 
 // Called every frame
 void AObstacle::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (IsOpen) {
-		if(GetActorLocation().Z < ZMin) {
-			Destroy();
+
+	if (IsOpening || IsClosing) {
+		float zDiff = OpenSpeed * DeltaTime;
+		if (IsOpening) {
+			zDiff *= -1;
 		}
-		else {
-			SetActorLocation(GetActorLocation() + FVector(0, 0, -(OpenSpeed * DeltaTime)));
-		}
-		
+		SetActorLocation(GetActorLocation() + FVector(0, 0, zDiff));
+		CheckCurPosition();
 	}
 }
