@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "UE4_HomeTask4_DelegsGameMode.h"
 #include "GameStructs.h"
+#include "GameFramework/Actor.h"
 #include "MyUE4_HomeTask4_DelegsGameMode.generated.h"
 
 /**
@@ -12,6 +13,7 @@
  */
 
 DECLARE_DELEGATE_OneParam(FTLightsSwitchDelegate, ETrafficLightsColors)
+DECLARE_EVENT(AMyUE4_HomeTask4_DelegsGameMode, FRoadFreeEvent)
 
 UCLASS()
 class UE4_HOMETASK4_DELEGS_API AMyUE4_HomeTask4_DelegsGameMode : public AUE4_HomeTask4_DelegsGameMode
@@ -20,10 +22,5 @@ class UE4_HOMETASK4_DELEGS_API AMyUE4_HomeTask4_DelegsGameMode : public AUE4_Hom
 
 public:
 	FTLightsSwitchDelegate TLSwitchDel;
-	/*FRoadFreeEvent RoadFreeEvt;
-
-	FRoadFreeEvent& onRoadFree() {
-		GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, TEXT("Now ROAD free!"));
-		return RoadFreeEvt;
-	}*/
+	FRoadFreeEvent OnRoadFree;
 };

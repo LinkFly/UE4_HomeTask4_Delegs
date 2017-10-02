@@ -14,8 +14,6 @@
 #include "Runtime/Engine/Classes/Engine/Engine.h"
 #include "TrafficLights.generated.h"
 
-DECLARE_EVENT(UObstacle, FRoadFreeEvent)
-
 UCLASS()
 class UE4_HOMETASK4_DELEGS_API ATrafficLights : public AActor
 {
@@ -24,8 +22,6 @@ class UE4_HOMETASK4_DELEGS_API ATrafficLights : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ATrafficLights();
-
-	FRoadFreeEvent OnRoadFree;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		UStaticMeshComponent* StaticMesh;
@@ -49,26 +45,22 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
+		void OnSwitchColor(ETrafficLightsColors ColorType);
+
+	UFUNCTION(BlueprintCallable)
 		void SwitchColor(ETrafficLightsColors ColorType);
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 		void HideLights();
-
-	UFUNCTION(BlueprintCallable)
-		void EnableRed();
-
-	UFUNCTION(BlueprintCallable)
-		void EnableYellow();
-
-	UFUNCTION(BlueprintCallable)
-		void EnableGreen();
-
-	UFUNCTION(BlueprintCallable)
-	void StartWork();
 
 private:
 	const int LightElementsIndex = 1;
+	ETrafficLightsColors CurColor;
+	ETrafficLightsColors NextColor;
+
 	void InitLight(UPointLightComponent* &Light, FLinearColor Color, FVector Location);
+	UPointLightComponent* GetColorComponent(ETrafficLightsColors Color);
 	void StartWorkByTimer();
-	ETrafficLightsColors CurColor = Red;
+	void StartWork();
+	void OpenRoadTrigger();
 };

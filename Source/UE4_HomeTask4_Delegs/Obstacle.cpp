@@ -24,16 +24,13 @@ AObstacle::AObstacle()
 void AObstacle::BeginPlay()
 {
 	Super::BeginPlay();
-	//AGameModeBase* CurGameMode = GetWorld()->GetAuthGameMode();
-	//AMyUE4_HomeTask4_DelegsGameMode* GameMode = Cast<AMyUE4_HomeTask4_DelegsGameMode>(CurGameMode);
-	//if (GameMode) {
-	//	//GameMode->RoadFreeEvt.AddUObject(AObstacle::StaticClass(), &AObstacle::onRoadFree);
-	//}
-	//else {
-	//	GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, TEXT("Error: Bad GameMode"));
-	//}
-	if (TrafficLights) {
-		TrafficLights->OnRoadFree.AddUObject(this, &AObstacle::Open);
+	AGameModeBase* CurGameMode = GetWorld()->GetAuthGameMode();
+	AMyUE4_HomeTask4_DelegsGameMode* GameMode = Cast<AMyUE4_HomeTask4_DelegsGameMode>(CurGameMode);
+	if (GameMode) {
+		GameMode->OnRoadFree.AddUObject(this, &AObstacle::Open);
+	}
+	else {
+		GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, TEXT("Error: Bad GameMode"));
 	}
 }
 
@@ -56,18 +53,3 @@ void AObstacle::Tick(float DeltaTime)
 		
 	}
 }
-
-void AObstacle::OnRoadFree()
-{
-	GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, TEXT("Activate!!!!!!!!1"));
-	Open();
-}
-//FRoadFreeEvent & AObstacle::onRoadFree(FRoadFreeEvent &Event)
-//{
-//	GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, TEXT("Activate!!!!!!!!1"));
-//	Open();
-//	return Event;
-//}
-//
-
-

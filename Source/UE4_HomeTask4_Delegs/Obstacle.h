@@ -33,8 +33,6 @@ public:
 		int32 OpenSpeed = 1000;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float ZMin = -500;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		ATrafficLights* TrafficLights;
 
 protected:
 	// Called when the game starts or when spawned
@@ -44,9 +42,4 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	//UFUNCTION()
-	/*FRoadFreeEvent& onRoadFree(FRoadFreeEvent &Event);*/
-	//bad/ virtual void OnPlayerEntered() override;
-	void OnRoadFree();
 };
